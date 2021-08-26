@@ -15,7 +15,9 @@ runs:
       with:
         ruby-version: 3
     - run: gem install github_changelog_generator
+      shell: bash
     - name: Update CHANGELOG.md
+      shell: bash -euxo pipefail {0}
       run: |
         if [[ -z '${{ inputs.future-release }}' ]]; then
           suffix=()
