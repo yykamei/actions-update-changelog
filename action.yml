@@ -7,7 +7,7 @@ inputs:
   future-release:
     description: The future release version for github_changelog_generator
     required: false
-    default: ''
+    default: ""
 runs:
   using: "composite"
   steps:
