@@ -1,0 +1,33 @@
+name: Changelog
+description: Update changelog
+inputs:
+  token:
+    description: GitHub access token for github_changelog_generator
+    required: true
+  future-release:
+    description: The future release version for github_changelog_generator
+    required: false
+    default: ''
+runs:
+  using: "composite"
+  steps:
+    - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 3
+    - run: gem install github_changelog_generator
+    - name: Update CHANGELOG.md
+      run: |
+        if [[ -z '${{ inputs.future-release }}' ]]; then
+          suffix=()
+        else
+          suffix=(--future-release '${{ inputs.future-release }}')
+        fi
+
+        github_changelog_generator \
+          --user "${GITHUB_REPOSITORY%/*}" \
+          --project "${GITHUB_REPOSITORY#*/}" \
+          --exclude-labels chore,no-changelog,duplicate,question,invalid,wontfix \
+          --include-tags-regex 'v\d+\.\d+\.\d+' \
+          "${suffix[@]}"
+      env:
+        CHANGELOG_GITHUB_TOKEN: ${{ inputs.token }}
