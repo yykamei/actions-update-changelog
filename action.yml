@@ -9,6 +9,10 @@ inputs:
     description: The future release version for github_changelog_generator
     required: false
     default: ""
+  since-tag:
+    description: Generate changelog since the specified tag.
+    required: false
+    default: ""
 runs:
   using: "composite"
   steps:
@@ -24,6 +28,12 @@ runs:
           suffix=()
         else
           suffix=(--future-release '${{ inputs.future-release }}')
+        fi
+
+        if [[ -z '${{ inputs.since-tag }}' ]]; then
+          suffix=()
+        else
+          suffix=(--since-tag '${{ inputs.since-tag }}')
         fi
 
         github_changelog_generator \
