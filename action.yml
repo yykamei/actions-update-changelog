@@ -24,16 +24,13 @@ runs:
     - name: Update CHANGELOG.md
       shell: bash -euxo pipefail {0}
       run: |
-        if [[ -z '${{ inputs.future-release }}' ]]; then
-          suffix=()
-        else
-          suffix=(--future-release '${{ inputs.future-release }}')
+        suffix=()
+        if [[ -n '${{ inputs.future-release }}' ]]; then
+          suffix+=(--future-release '${{ inputs.future-release }}')
         fi
 
-        if [[ -z '${{ inputs.since-tag }}' ]]; then
-          suffix=()
-        else
-          suffix=(--since-tag '${{ inputs.since-tag }}')
+        if [[ -n '${{ inputs.since-tag }}' ]]; then
+          suffix+=(--since-tag '${{ inputs.since-tag }}')
         fi
 
         github_changelog_generator \
